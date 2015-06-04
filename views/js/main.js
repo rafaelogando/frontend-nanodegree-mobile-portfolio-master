@@ -18,6 +18,9 @@ cameron *at* udacity *dot* com
 
 // As you may have realized, this website randomly generates pizzas.
 // Here are arrays of all possible pizza ingredients.
+
+"use strict";
+
 var pizzaIngredients = {};
 pizzaIngredients.meats = [
   "Pepperoni",
@@ -445,7 +448,8 @@ var resizePizzas = function(size) {
     //3 wich can be used to set pizzas size.
 
     var select = document.getElementsByClassName("randomPizzaContainer"); //This var is outside the loop so it wont have to be created each loop.
-    for (var i = 0; i < select.length; i++) {
+    var RPClength = select.length; // length of the elements on select variable.
+    for (var i = 0; i < RPClength; i++) {
       select[i].style.width = sizeSwitcher(size);  // sizes will now be set base on percentage and not px.
     }
   }
@@ -513,8 +517,7 @@ function updatePositions() {
   window.performance.mark("mark_end_frame");
   window.performance.measure("measure_frame_duration", "mark_start_frame", "mark_end_frame");
   if (frame % 10 === 0) {
-    timesToUpdatePosition = window.performance.getEntriesByName("measure_frame_duration");
-    logAverageFrame(timesToUpdatePosition);
+    logAverageFrame(window.performance.getEntriesByName("measure_frame_duration"));
   }
 }
 
@@ -525,21 +528,22 @@ window.addEventListener('scroll', updatePositions);
 // Generates the sliding pizzas when the page loads.
 document.addEventListener('DOMContentLoaded', function() {
 
-  var s = 256;
-  var cols = document.querySelector('.container').offsetWidth/s; //The number of colums will depend on the main parent width.
+  
+  var cols = 8; //The number of colums will depend on the main parent width.
+  var s = window.innerWidth/cols;
 
-  var screenHeigth = screen.height; // var used to determinate how many pizzas are needed to fill only the visible screen and not the whole page.
+  var screenHeigth = window.innerHeight; // var used to determinate how many pizzas are needed to fill only the visible screen and not the whole page.
 
   for (var i = 0; screenHeigth > (Math.floor(i / cols) * s); i++) {
 
-    var elem = document.createElement('img');
+    var elem = document.createElement('img'); 
     elem.className = 'mover';
     elem.src = "images/pizzaback.png";
     elem.style.height = "100px";
     elem.style.width = "73.333px";
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    document.querySelector("#movingPizzas1").appendChild(elem);
+    document.getElementById("movingPizzas1").appendChild(elem);
   }
   updatePositions();
 });
