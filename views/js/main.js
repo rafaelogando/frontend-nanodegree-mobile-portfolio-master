@@ -425,6 +425,7 @@ var resizePizzas = function(size) {
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
 
+    // this function returns a percentage value base on slide input value to set pizzas size.
      function sizeSwitcher (size) {
       switch(size) {
         case "1":
@@ -437,9 +438,15 @@ var resizePizzas = function(size) {
           console.log("bug in sizeSwitcher");
       }
     }
-    var select = document.querySelectorAll(".randomPizzaContainer");
+
+    //This loop select all pizza containers (ramdomPizzaContainer) and changes 
+    //their size base on the slide input value.  Using determineDx to calculate
+    //size difference was not need cause the slide input give us values from 1 to
+    //3 wich can be used to set pizzas size.
+
+    var select = document.getElementsByClassName("randomPizzaContainer"); //This var is outside the loop so it wont have to be created each loop.
     for (var i = 0; i < select.length; i++) {
-      select[i].style.width = sizeSwitcher(size);
+      select[i].style.width = sizeSwitcher(size);  // sizes will now be set base on percentage and not px.
     }
   }
 
@@ -455,8 +462,9 @@ var resizePizzas = function(size) {
 window.performance.mark("mark_start_generating"); // collect timing data
 
 // This for-loop actually creates and appends all of the pizzas when the page loads
+
+var pizzasDiv = document.getElementById("randomPizzas"); //This var is outside the loop so it wont have to be created for each loop.
 for (var i = 2; i < 100; i++) {
-  var pizzasDiv = document.getElementById("randomPizzas");
   pizzasDiv.appendChild(pizzaElementGenerator(i));
 }
 
@@ -489,14 +497,14 @@ function updatePositions() {
   window.performance.mark("mark_start_frame");
   var myArray=[]; //  This array holds the phase value for all mover elements.
 
-  var items = document.querySelectorAll('.mover');
-  for (var i = 0; i < items.length; i++) {
+  var items = document.getElementsByClassName('mover');
+  for (var i = 0; i < 4; i++) {
     myArray[i]= Math.sin((document.body.scrollTop / 1250) + (i % 5));
 
   //This for loop set all mover elements position, after reading all phases, avoinding forced synchronous layout.
   }
   for (var i = 0; i < items.length; i++) {
-    items[i].style.left = items[i].basicLeft + 100 * myArray[i] + 'px'; 
+    items[i].style.left = items[i].basicLeft + 100 * myArray[i%4] + 'px'; 
   }
   
 
